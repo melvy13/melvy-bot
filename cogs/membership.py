@@ -9,11 +9,13 @@ class Membership(commands.Cog):
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         await member.kick(reason=reason)
         await ctx.send(f"Kicked {member.mention}! Reason: {reason}")
+        print(f"{ctx.author} kicked {member}. Reason: {reason}")
 
     @commands.command()
     async def ban(self, ctx, member: discord.Member, *, reason=None):
         await member.ban(reason=reason)
         await ctx.send(f"Banned {member.mention}! Reason: {reason}")
+        print(f"{ctx.author} banned {member}. Reason: {reason}")
 
 async def setup(bot):
     await bot.add_cog(Membership(bot))

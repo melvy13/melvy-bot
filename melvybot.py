@@ -45,9 +45,16 @@ class melvyBot(commands.Bot):
             await guild.system_channel.send(to_send)
             print(f"{member} has left :C")
 
+    async def on_message(self, message: discord.Message) -> None:
+        if message.author == self.user:
+            return
+        await bot.process_commands(message)
+        if message.content == ".":
+            await message.channel.send("Ah you are very silent")
+
     async def on_command_error(self, ctx, error):
         await ctx.send(f"?\nError: {error}")
-        print(error)
+        print(f"Error: {error}")
 
 bot = melvyBot()
 
