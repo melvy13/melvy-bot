@@ -44,5 +44,9 @@ class Basic(commands.Cog):
             total += die
         await ctx.send(f"You rolled a total of {total}!")
 
+    @commands.command(description="You are tired of making decisions, so let the bot do it for you instead >.< (Separate each item with a space)")
+    async def choose(self, ctx, *choices):
+        await ctx.send(f"{random.choice(choices)} is chosen!")
+
 async def setup(bot):
     await bot.add_cog(Basic(bot))
