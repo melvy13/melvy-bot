@@ -51,11 +51,12 @@ class melvyBot(commands.Bot):
 
 bot = melvyBot()
 
-@bot.command()
+@bot.command(description="Pings the bot.....or play ping pong")
 async def ping(ctx):
     await ctx.send(f"...pong!\n\nor did you want the latency? : {(bot.latency*1000):.2f}ms")
 
-@bot.command(aliases=["8ball", "eightball", "magiceightball"])
+# 
+@bot.command(aliases=["8ball", "eightball"], description="Roll the magic 8 ball for answering yes/no questions about your future!")
 async def magic8ball(ctx, *, question):
     responses = ["Yes :D",
                  "Without a doubt :D",
@@ -70,6 +71,18 @@ async def magic8ball(ctx, *, question):
                  "Cannot predict now :v"]
     
     await ctx.send(f"Your question: {question}\nBot answer: {random.choice(responses)}")
+
+@bot.command(description="Clear the last 6 messages (including calling command) unless specfied")
+async def clear(ctx, amount=6):
+    await ctx.channel.purge(limit=amount)
+
+@bot.command()
+async def kick(ctx, member: discord.Member, *, reason=None):
+    await member.kick(reason=reason)
+
+@bot.command()
+async def ban(ctx, member: discord.Member, *, reason=None):
+    await member.ban(reason=reason)
 
 if __name__ == "__main__":
     bot.run(BOT_TOKEN)
