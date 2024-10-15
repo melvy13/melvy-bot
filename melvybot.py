@@ -2,36 +2,74 @@ from dotenv import load_dotenv
 import os
 import discord
 from discord.ext import commands
-import asyncio
+import random
 
 # Load bot token
 load_dotenv()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
-bot = commands.Bot(command_prefix=".", intents=discord.Intents.all())
+# Intents
+intents = discord.Intents.default()
+intents.members = True
+intents.message_content = True
 
-@bot.event
-async def on_ready():
-    print("Bot is ready and running!")
+# Bot presence
+game = discord.Game("with the API...")
 
-@bot.command(aliases=["hi", "hello", "hey"])
-async def say_hi(ctx):
-    await ctx.send(f"Hi, {ctx.author.mention}!")
+initial_extensions = ["cogs.test"]
 
-@bot.command()
-async def sendembed(ctx):
-    embedded_msg = discord.Embed(title="Title of embed", description="Description of embed", color=discord.Color.green())
-    embedded_msg.set_thumbnail(url=ctx.author.avatar)
-    embedded_msg.add_field(name="Name of field", value="Value of field", inline=False)
-    embedded_msg.set_image(url=ctx.guild.icon)
-    embedded_msg.set_footer(text="Footer text", icon_url=ctx.author.avatar)
-    await ctx.send(embed=embedded_msg)
+class melvyBot(commands.Bot):
+    def __init__(self):
+        super().__init__(
+            command_prefix=commands.when_mentioned_or("."), 
+            intents=intents
+        )
+
+    async def on_ready(self):
+        print(f"Beep boop {self.user} is online and ready!")
+        print("--------------------")
+        await self.change_presence(activity=game)
+        
+    async def on_member_join(self, member: discord.Member):
+        guild = member.guild
+        if guild.system_channel is not None:
+            to_send = f"Hi {member.mention}! Welcome to {guild.name}!"
+            await guild.system_channel.send(to_send)
+            print(f"{member} has joined >.>")
+
+    async def on_member_remove(self, member: discord.Member):
+        guild = member.guild
+        if guild.system_channel is not None:
+            to_send = f"Bye, {member.mention}!"
+            await guild.system_channel.send(to_send)
+            print(f"{member} has left :C")
+
+    async def initialize_cogs(self):
+        for ext in initial_extensions:
+            await self.load_extension(ext)
+            print(f"Loaded extension {ext}!")
+
+bot = melvyBot()
 
 @bot.command()
 async def ping(ctx):
-    ping_embed = discord.Embed(title="Ping", description="Latency in ms", color=discord.Color.blue())
-    ping_embed.add_field(name=f"{bot.user.name}'s Latency (ms): ", value=f"{round(bot.latency * 1000)}ms", inline=False)
-    ping_embed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar)
-    await ctx.send(embed=ping_embed)
+    await ctx.send(f"...pong!\n\nor did you want the latency? : {(bot.latency*1000):.2f}ms")
 
-bot.run(BOT_TOKEN)
+@bot.command(aliases=["8ball", "eightball", "magiceightball"])
+async def magic8ball(ctx, *, question):
+    responses = ["Yes :D",
+                 "Without a doubt :D",
+                 "Definitely yes :D",
+                 "Absolutely :D",
+                 "Certainly :D",
+                 "Most likely :)",
+                 "No :(",
+                 "Don't count on it :(",
+                 "Very doubtful :(",
+                 "Ask again later :v",
+                 "Cannot predict now :v"]
+    
+    await ctx.send(f"Your question: {question}\nBot answer: {random.choice(responses)}")
+
+if __name__ == "__main__":
+    bot.run(BOT_TOKEN)
