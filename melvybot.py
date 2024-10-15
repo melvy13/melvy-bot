@@ -45,6 +45,10 @@ class melvyBot(commands.Bot):
             await guild.system_channel.send(to_send)
             print(f"{member} has left :C")
 
+    async def on_command_error(self, ctx, error):
+        await ctx.send(f"?\nError: {error}")
+        print(error)
+
 bot = melvyBot()
 
 async def load_initial_extensions():
