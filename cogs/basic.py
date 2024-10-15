@@ -29,5 +29,20 @@ class Basic(commands.Cog):
         await ctx.send(f"Rolling the 8 ball...\n\nVerdict: {bot_answer}")
         print(f"{ctx.message.author} rolled the 8 ball.\nQ: {question}\nA: {bot_answer}")
 
+    @commands.command(description="Roll a dice, or two. Or maybe three. Or maybe more.")
+    async def rolldice(self, ctx, amount=1):
+        dice_art = {1: "⚀", 2: "⚁", 3: "⚂", 4: "⚃", 5: "⚄", 6: "⚅"}
+        dice = []
+        total = 0
+        
+        for i in range(amount):
+            die = random.randint(1, 6)
+            dice.append(die)
+            await ctx.send(f"{dice_art.get(die)}") # Hashtag in front of text enlarges message in discord
+
+        for die in dice:
+            total += die
+        await ctx.send(f"You rolled a total of {total}!")
+
 async def setup(bot):
     await bot.add_cog(Basic(bot))
