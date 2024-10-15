@@ -5,9 +5,13 @@ class Test(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-        @commands.command(aliases=["hi", "hello", "hey"])
-        async def say_hi(ctx):
-            await ctx.send(f"Hi, {ctx.author.mention}!")
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print("Bot is online")
+
+    @commands.command(aliases=["hi", "hello", "hey"])
+    async def say_hi(self, ctx):
+        await ctx.send(f"Hi, {ctx.author.mention}!")
 
         @commands.command()
         async def sendembed(ctx):
@@ -25,5 +29,5 @@ class Test(commands.Cog):
             ping_embed.set_footer(text=f"Requested by {ctx.author.name}", icon_url=ctx.author.avatar)
             await ctx.send(embed=ping_embed)
 
-async def setup(bot):
-    await bot.add_cog(Test(bot))
+def setup(bot):
+    bot.add_cog(Test(bot))

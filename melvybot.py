@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import os
 import discord
 from discord.ext import commands
-import random
+import asyncio
 
 # Load bot token
 load_dotenv()
@@ -13,10 +13,10 @@ intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
 
-# Bot presence
+# Bot presence status
 game = discord.Game("with the API...")
 
-initial_extensions = ["cogs.test"]
+initial_extensions = ["membership", "basic", "messages"]
 
 class melvyBot(commands.Bot):
     def __init__(self):
@@ -26,6 +26,7 @@ class melvyBot(commands.Bot):
         )
 
     async def on_ready(self):
+        print("--------------------")
         print(f"Beep boop {self.user} is online and ready!")
         print("--------------------")
         await self.change_presence(activity=game)
@@ -44,45 +45,35 @@ class melvyBot(commands.Bot):
             await guild.system_channel.send(to_send)
             print(f"{member} has left :C")
 
-    async def initialize_cogs(self):
-        for ext in initial_extensions:
-            await self.load_extension(ext)
-            print(f"Loaded extension {ext}!")
-
 bot = melvyBot()
 
-@bot.command(description="Pings the bot.....or play ping pong")
-async def ping(ctx):
-    await ctx.send(f"...pong!\n\nor did you want the latency? : {(bot.latency*1000):.2f}ms")
+@bot.command(description="Load an extension")
+async def load(ctx, extension):
+    await bot.load_extension(f"cogs.{extension}")
+    await ctx.send(f"Loaded {extension}.py extension!")
+    print(f"Loaded extension: {extension}.py")
 
-# 
-@bot.command(aliases=["8ball", "eightball"], description="Roll the magic 8 ball for answering yes/no questions about your future!")
-async def magic8ball(ctx, *, question):
-    responses = ["Yes :D",
-                 "Without a doubt :D",
-                 "Definitely yes :D",
-                 "Absolutely :D",
-                 "Certainly :D",
-                 "Most likely :)",
-                 "No :(",
-                 "Don't count on it :(",
-                 "Very doubtful :(",
-                 "Ask again later :v",
-                 "Cannot predict now :v"]
-    
-    await ctx.send(f"Your question: {question}\nBot answer: {random.choice(responses)}")
+@bot.command(description="Unload an extension")
+async def unload(ctx, extension):
+    await bot.unload_extension(f"cogs.{extension}")
+    await ctx.send(f"Unloaded {extension}.py extension!")
+    print(f"Unloaded extension: {extension}.py")
 
-@bot.command(description="Clear the last 6 messages (including calling command) unless specfied")
-async def clear(ctx, amount=6):
-    await ctx.channel.purge(limit=amount)
+@bot.command(description="Reload an extension")
+async def reload(ctx, extension):
+    await bot.reload_extension(f"cogs.{extension}")
+    await ctx.send(f"Reloaded {extension}.py extension!")
+    print(f"Reloaded extension: {extension}.py")
 
-@bot.command()
-async def kick(ctx, member: discord.Member, *, reason=None):
-    await member.kick(reason=reason)
+async def load_initial_extensions():
+    for file in initial_extensions:
+        await bot.load_extension(f"cogs.{file}")
+        print(f"Loaded initial extension: {file}.py")
 
-@bot.command()
-async def ban(ctx, member: discord.Member, *, reason=None):
-    await member.ban(reason=reason)
+async def main():
+    async with bot:
+        await load_initial_extensions()
+        await bot.start(BOT_TOKEN)
 
 if __name__ == "__main__":
-    bot.run(BOT_TOKEN)
+    asyncio.run(main())

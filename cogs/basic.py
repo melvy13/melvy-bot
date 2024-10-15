@@ -8,10 +8,10 @@ class Basic(commands.Cog):
 
     @commands.command(description="Pings the bot.....or play ping pong")
     async def ping(self, ctx):
-        await ctx.send(f"...pong!\n\nor did you want the latency? : {(self.bot.latency*1000):.2f}ms")
+        await ctx.send(f"...pong!\n{(self.bot.latency*1000):.2f}ms")
 
-    @commands.command(aliases=["8ball", "eightball"], description="Roll the magic 8 ball for answering yes/no questions about your future!")
-    async def magic8ball(ctx, *, question):
+    @commands.command(name="8ball", description="Roll the magic 8 ball for answering yes/no questions about your future!")
+    async def _8ball(self, ctx, *, question):
         responses = ["Yes :D",
                  "Without a doubt :D",
                  "Definitely yes :D",
@@ -26,5 +26,5 @@ class Basic(commands.Cog):
     
         await ctx.send(f"Your question: {question}\nBot answer: {random.choice(responses)}")
 
-def setup(bot):
-    bot.add_cog(Basic(bot))
+async def setup(bot):
+    await bot.add_cog(Basic(bot))
