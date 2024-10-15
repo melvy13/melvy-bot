@@ -16,7 +16,7 @@ intents.message_content = True
 # Bot presence status
 game = discord.Game("with the API...")
 
-initial_extensions = ["membership", "basic", "messages"]
+initial_extensions = ["extensions", "membership", "basic", "messages"]
 
 class melvyBot(commands.Bot):
     def __init__(self):
@@ -46,24 +46,6 @@ class melvyBot(commands.Bot):
             print(f"{member} has left :C")
 
 bot = melvyBot()
-
-@bot.command(description="Load an extension")
-async def load(ctx, extension):
-    await bot.load_extension(f"cogs.{extension}")
-    await ctx.send(f"Loaded {extension}.py extension!")
-    print(f"Loaded extension: {extension}.py")
-
-@bot.command(description="Unload an extension")
-async def unload(ctx, extension):
-    await bot.unload_extension(f"cogs.{extension}")
-    await ctx.send(f"Unloaded {extension}.py extension!")
-    print(f"Unloaded extension: {extension}.py")
-
-@bot.command(description="Reload an extension")
-async def reload(ctx, extension):
-    await bot.reload_extension(f"cogs.{extension}")
-    await ctx.send(f"Reloaded {extension}.py extension!")
-    print(f"Reloaded extension: {extension}.py")
 
 async def load_initial_extensions():
     for file in initial_extensions:

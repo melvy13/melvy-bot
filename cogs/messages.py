@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 class Messages(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.command(description="Clear the last 6 messages (including calling command) unless specfied")
