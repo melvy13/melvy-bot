@@ -7,21 +7,19 @@ class Calculator(commands.Cog):
         self.bot = bot
 
     @commands.command(description="Add numbers with each number separated by a space")
-    async def add(self, ctx, *, numbers):
-        string_list = numbers.split()
-        number_list = [float(i) for i in string_list]
-        result = sum(number_list)
+    async def add(self, ctx, *numbers):
+        float_list = [float(i) for i in numbers]
+        result = sum(float_list)
 
-        expression = " + ".join(string_list)
+        expression = " + ".join(numbers)
         await ctx.send(f"{expression} = {result}")
 
     @commands.command(description="Multiply numbers with each number separated by a space")
-    async def multiply(self, ctx, *, numbers):
-        string_list = numbers.split()
-        number_list = [float(i) for i in string_list]
-        result = math.prod(number_list)
+    async def multiply(self, ctx, *numbers):
+        float_list = [float(i) for i in numbers]
+        result = math.prod(float_list)
 
-        expression = " x ".join(string_list)
+        expression = " x ".join(numbers)
         await ctx.send(f"{expression} = {result}")
 
 async def setup(bot):
