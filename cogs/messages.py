@@ -3,12 +3,15 @@ from discord.ext import commands
 import asyncio
 
 class Messages(commands.Cog):
+    "💬 Deal with moderation of messages"
+
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command(description="Clear the last few messages. Must indicate amount (number of messages to delete).")
+    @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def clear(self, ctx, amount):
+        "🧹 Clear last few messages [.clear {amount}]"
 
         await ctx.send(f"Are you sure you want to clear the last {amount} messages? React with 👍 to continue.")
 
