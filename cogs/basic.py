@@ -78,31 +78,18 @@ class Basic(commands.Cog):
 
         url = "https://api.api-ninjas.com/v1/quotes"
 
-        try:
-            response = requests.get(url, headers={'X-Api-Key': self.ninjas_api})
-            response.raise_for_status()
-            data = response.json()
+        data = self.api_ninjas_call(url)
+        quote = data[0]["quote"]
+        author = data[0]["author"]
+        await ctx.send(f"\"{quote}\" - {author}")
 
-            await ctx.send("beep boop.. here's a random quote:")
-            await ctx.send(f"\"{data[0]["quote"]}\" - {data[0]["author"]}")
-
-        except requests.exceptions.HTTPError as http_error:
-            await ctx.send(f"beep - http error...\n{http_error}")
-
-        except requests.exceptions.ConnectionError:
-            await ctx.send("beep - connection error...")
-
-        except requests.exceptions.Timeout:
-            await ctx.send("beep - request timed out...")
-
-        except requests.exceptions.TooManyRedirects:
-            await ctx.send("beep - too many redirects...")
-        
-        except requests.exceptions.RequestException as req_error:
-            await ctx.send(f"beep - something unexpected occured...\n{req_error}")
-
-        except Exception as e:
-            await ctx.send(f"beep - something went wrong...\n{e}")
+    def api_ninjas_call(self, url):
+        response = requests.get(url, headers={'X-Api-Key': self.ninjas_api})
+        if response.status_code == requests.codes.ok:
+            return response.json()
+        else:
+            print(f"Error: {response.status_code} {response.text}")
+            return ""
 
 async def setup(bot):
     await bot.add_cog(Basic(bot))
