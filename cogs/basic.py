@@ -83,6 +83,16 @@ class Basic(commands.Cog):
         author = data[0]["author"]
         await ctx.send(f"\"{quote}\" - {author}")
 
+    @commands.command()
+    async def dadjoke(self, ctx):
+        "🧔‍♂️ Get a random dad joke"
+
+        url = "https://api.api-ninjas.com/v1/dadjokes"
+
+        data = self.api_ninjas_call(url)
+        joke = data[0]["joke"]
+        await ctx.send(joke)
+
     def api_ninjas_call(self, url):
         response = requests.get(url, headers={'X-Api-Key': self.ninjas_api})
         if response.status_code == requests.codes.ok:
