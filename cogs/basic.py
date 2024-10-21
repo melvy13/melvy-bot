@@ -4,6 +4,7 @@ import random
 import requests
 from dotenv import load_dotenv
 import os
+import time
 
 class Basic(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -13,49 +14,57 @@ class Basic(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx):
-        "🏓 Ping the bot......or play ping pong [.ping]"
+        "🏓 Ping the bot......or play ping pong"
+
         await ctx.send(f"...pong!\n{(self.bot.latency*1000):.2f}ms")
         print(f"{ctx.message.author} pinged the bot: {(self.bot.latency*1000):.2f}ms")
 
     @commands.command(name="8ball")
-    async def _8ball(self, ctx, *, question):
-        "🔮 Roll the magic 8 ball, determine your future [.8ball {question}]"
-        responses = ["Yes :D",
-                 "Without a doubt :D",
-                 "Definitely yes :D",
-                 "Absolutely :D",
-                 "Certainly :D",
-                 "Most likely :)",
-                 "No :(",
-                 "Don't count on it :(",
-                 "Very doubtful :(",
-                 "Ask again later :v",
-                 "Cannot predict now :v"]
+    async def _8ball(self, ctx, *, question: str = commands.parameter(description="- A yes/no question.")):
+        """
+        🔮 Roll the magic 8 ball, determine your future
+        
+        Example:
+        .8ball Will I win my next 50/50?
+        """
+        responses = ["Yes :D", "Without a doubt :D", "Definitely yes :D", "Absolutely :D", "Certainly :D", "Most likely :)", 
+                     "No :(", "Don't count on it :(", "Very doubtful :(", "Ask again later :v", "Cannot predict now :v"]
         
         bot_answer = random.choice(responses)
-        await ctx.send(f"Rolling the 8 ball...\n\nVerdict: {bot_answer}")
-        print(f"{ctx.message.author} rolled the 8 ball.\nQ: {question}\nA: {bot_answer}")
+        await ctx.send("Rolling the 8 ball...")
+        time.sleep(1)
+        await ctx.send(f"Verdict: {bot_answer}")
 
     @commands.command()
-    async def rolldice(self, ctx, amount=1):
-        "🎲 Roll a dice, or two. Or maybe three. Or maybe more.. [.rolldice {amount (optional)}] "
+    async def rolldice(self, ctx, amount: int = commands.parameter(default=1, description="- Number of dices to roll.")):
+        """🎲 Roll a dice, or two. Or maybe three. Or maybe more...
+        
+        Example:
+        .rolldice 5
+        """
 
         dice_art = {1: "⚀", 2: "⚁", 3: "⚂", 4: "⚃", 5: "⚄", 6: "⚅"}
         dice = []
-        total = 0
         
         for i in range(amount):
             die = random.randint(1, 6)
             dice.append(die)
-            await ctx.send(f"{dice_art.get(die)}") # Hashtag in front of text enlarges message in discord
+            await ctx.send(f"{dice_art.get(die)}")
 
-        for die in dice:
-            total += die
-        await ctx.send(f"You rolled a total of {total}!")
+        if amount == 1:
+            await ctx.send(f"You rolled a {die}!")
+        else:
+            await ctx.send(f"You rolled a total of {sum(dice)}!")
 
     @commands.command()
-    async def choose(self, ctx, *choices):
-        "⚖️ Let the bot choose for you, because you can never make decisions [.choice {*choices}]"
+    async def choose(self, ctx, *, choices: str = commands.parameter(description="- A list of choices each separated by a space")):
+        """⚖️ Let the bot choose, because you can never make decisions
+        
+        Example:
+        .choose pizza burger sushi spaghetti
+        """
+        choices = choices.split()
+
         await ctx.send(f"beep - i choose {random.choice(choices)}")
 
     @commands.command()
