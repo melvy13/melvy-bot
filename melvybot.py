@@ -16,7 +16,7 @@ intents.message_content = True
 # Bot presence status
 game = discord.Game("with the API...")
 
-initial_extensions = ["extensions", "membership", "basic", "messages", "calculator", "animals"]
+initial_extensions = ["extensions", "membership", "basic", "messages", "calculator", "animals", "quotes"]
 
 class melvyBot(commands.Bot):
     def __init__(self):
