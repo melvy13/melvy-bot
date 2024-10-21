@@ -5,6 +5,8 @@ import requests
 from dotenv import load_dotenv
 
 class Animals(commands.Cog):
+    "😺🐶 Get pictures of cats or dogs"
+
     def __init__(self, bot: commands.Bot):
         load_dotenv()
         self.bot = bot

@@ -8,16 +8,30 @@ class Membership(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def kick(self, ctx, member: discord.Member, *, reason=None):
-        "🦵 Kick a member [.kick {@member} {reason (optional)}]"
+    @commands.has_permissions(kick_members=True)
+    async def kick(self, ctx, member: discord.Member = commands.parameter(description="- @Member to kick"), 
+                   *, reason: str = commands.parameter(default=None, description="- Reason for kicking")):
+        """
+        🦵 Kick a member
+        
+        Example:
+        .kick @member I don't like you
+        """
 
         await member.kick(reason=reason)
         await ctx.send(f"Kicked {member.mention}! Reason: {reason}")
         print(f"{ctx.author} kicked {member}. Reason: {reason}")
 
     @commands.command()
-    async def ban(self, ctx, member: discord.Member, *, reason=None):
-        "🔨 Ban a member [.ban {@member} {reason (optional)}]"
+    @commands.has_permissions(ban_members=True)
+    async def ban(self, ctx, member: discord.Member = commands.parameter(description="- @Member to ban"), 
+                   *, reason: str = commands.parameter(default=None, description="- Reason for banning")):
+        """
+        🔨 Ban a member
+
+        Example:
+        .ban @member I hate you
+        """
 
         await member.ban(reason=reason)
         await ctx.send(f"Banned {member.mention}! Reason: {reason}")

@@ -7,6 +7,8 @@ import os
 import time
 
 class Basic(commands.Cog):
+    "📃 Simple basic commands"
+
     def __init__(self, bot: commands.Bot):
         load_dotenv()
         self.bot = bot
@@ -27,6 +29,7 @@ class Basic(commands.Cog):
         Example:
         .8ball Will I win my next 50/50?
         """
+
         responses = ["Yes :D", "Without a doubt :D", "Definitely yes :D", "Absolutely :D", "Certainly :D", "Most likely :)", 
                      "No :(", "Don't count on it :(", "Very doubtful :(", "Ask again later :v", "Cannot predict now :v"]
         
@@ -37,7 +40,8 @@ class Basic(commands.Cog):
 
     @commands.command()
     async def rolldice(self, ctx, amount: int = commands.parameter(default=1, description="- Number of dices to roll.")):
-        """🎲 Roll a dice, or two. Or maybe three. Or maybe more...
+        """
+        🎲 Roll a dice, or two. Or maybe three. Or maybe more...
         
         Example:
         .rolldice 5
@@ -57,8 +61,9 @@ class Basic(commands.Cog):
             await ctx.send(f"You rolled a total of {sum(dice)}!")
 
     @commands.command()
-    async def choose(self, ctx, *, choices: str = commands.parameter(description="- A list of choices each separated by a space")):
-        """⚖️ Let the bot choose, because you can never make decisions
+    async def choose(self, ctx, *, choices: str = commands.parameter(description="- A list of choices separated by spaces")):
+        """
+        ⚖️ Let the bot choose, because you can never make decisions
         
         Example:
         .choose pizza burger sushi spaghetti

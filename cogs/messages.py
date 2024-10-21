@@ -10,8 +10,13 @@ class Messages(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
-    async def clear(self, ctx, amount):
-        "🧹 Clear last few messages [.clear {amount}]"
+    async def clear(self, ctx, amount: int = commands.parameter(description="- Number of messages to clear")):
+        """
+        🧹 Clear last few messages
+        
+        Example:
+        .clear 10
+        """
 
         await ctx.send(f"Are you sure you want to clear the last {amount} messages? React with 👍 to continue.")
 

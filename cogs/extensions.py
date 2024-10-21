@@ -8,16 +8,28 @@ class Extensions(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def load(self, ctx, extension):
-        "⚙️ Load an extension [.load {extension}]"
+    @commands.has_permissions(administrator=True)
+    async def load(self, ctx, extension: str = commands.parameter(description="- Name of extension in cogs folder")):
+        """
+        ⚙️ Load an extension 
+        
+        Example:
+        .load test
+        """
 
         await self.bot.load_extension(f"cogs.{extension}")
         await ctx.send(f"Loaded {extension}.py extension!")
         print(f"Loaded extension: {extension}.py")
 
     @commands.command()
-    async def unload(self, ctx, extension):
-        "⚙️ Unload an extension [.unload {extension}]"
+    @commands.has_permissions(administrator=True)
+    async def unload(self, ctx, extension: str = commands.parameter(description="- Name of extension in cogs folder")):
+        """
+        ⚙️ Unload an extension
+        
+        Example:
+        .unload test
+        """
 
         # Prevents from unloading this extensions.py file itself
         if extension == "extensions":
@@ -29,8 +41,14 @@ class Extensions(commands.Cog):
         print(f"Unloaded extension: {extension}.py")
 
     @commands.command()
-    async def reload(self, ctx, extension):
-        "⚙️ Reload an extension [.reload {extension}]"
+    @commands.has_permissions(administrator=True)
+    async def reload(self, ctx, extension: str = commands.parameter(description="- Name of extension in cogs folder")):
+        """
+        ⚙️ Reload an extension
+        
+        Example:
+        .reload test
+        """
 
         await self.bot.reload_extension(f"cogs.{extension}")
         await ctx.send(f"Reloaded {extension}.py extension!")

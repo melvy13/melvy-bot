@@ -9,9 +9,15 @@ class Calculator(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def add(self, ctx, *numbers):
-        "➕ Get sum of some numbers [.add {*numbers}]"
+    async def add(self, ctx, *, numbers: str = commands.parameter(description="- A list of numbers separated by spaces")):
+        """
+        ➕ Get sum of some numbers
+        
+        Example:
+        .add 1 2 3 4 5
+        """
 
+        numbers = numbers.split()
         float_list = [float(i) for i in numbers]
         result = sum(float_list)
 
@@ -19,9 +25,15 @@ class Calculator(commands.Cog):
         await ctx.send(f"{expression} = {result:.4f}")
 
     @commands.command()
-    async def multiply(self, ctx, *numbers):
-        "✖️ Get product of some numbers [.multiply {*numbers}]"
+    async def multiply(self, ctx, *, numbers: str = commands.parameter(description="- A list of numbers separated by spaces")):
+        """
+        ✖️ Get product of some numbers 
+        
+        Example:
+        .multiply 10 2 7
+        """
 
+        numbers = numbers.split()
         float_list = [float(i) for i in numbers]
         result = math.prod(float_list)
 
@@ -29,25 +41,36 @@ class Calculator(commands.Cog):
         await ctx.send(f"{expression} = {result:.4f}")
 
     @commands.command()
-    async def minus(self, ctx, number1, number2):
-        "➖ Get subtraction of two numbers [.minus {number1} {number2}]"
+    async def minus(self, ctx, number1: float = commands.parameter(description="- The first number"), 
+                    number2: float = commands.parameter(description="- The second number")):
+        """
+        ➖ Get subtraction of two numbers
+         
+        Example:
+        .minus 100 29
+        """
 
-        result = float(number1) - float(number2)
-        expression = number1 + " - " + number2
+        result = number1 - number2
+        expression = f"{number1} - {number2}"
         await ctx.send(f"{expression} = {result:.4f}")
 
     @commands.command()
-    async def divide(self, ctx, number1, number2):
-        "➗ Get division of two numbers [.divide {number1} {number2}]"
+    async def divide(self, ctx, number1: float = commands.parameter(description="- The first number"), 
+                    number2: float = commands.parameter(description="- The second number")):
+        """
+        ➗ Get division of two numbers
+        
+        Example:
+        .divide 49 7
+        """
 
-        result = float(number1) / float(number2)
-        expression = number1 + " ÷ " + number2
-
+        result = number1 / number2
+        expression = f"{number1} ÷ {number2}"
         await ctx.send(f"{expression} = {result:.4f}")
 
     @commands.command()
     async def pi(self, ctx):
-        "🥧 Get the value of pi [.pi]"
+        "🥧 Get the value of pi"
 
         await ctx.send("this is pie... no sorry i meant pi. beep boop.")
         await ctx.send("3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844" +
@@ -57,7 +80,7 @@ class Calculator(commands.Cog):
         
     @commands.command()
     async def euler(self, ctx):
-        "   Get the value of Euler's number [.euler]"
+        "🔢 Get the value of Euler's number"
 
         await ctx.send("was π not enough numbers for you? beep boop.")
         await ctx.send("2.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178525166427427466391932003059921817413" +
@@ -66,10 +89,15 @@ class Calculator(commands.Cog):
                        "20931014169283681902551510865746377211125238978442505695369677078544996996794686445490598793163688923009879312773617821542499")
         
     @commands.command()
-    async def sqrt(self, ctx, number):
-        "   Get the square root of a number [.sqrt {number}]"
+    async def sqrt(self, ctx, number: float = commands.parameter(description="- The number to square root of")):
+        """
+        ⬜ Get the square root of a number
+        
+        Example:
+        .sqrt 64
+        """
 
-        result = math.sqrt(float(number))
+        result = math.sqrt(number)
         await ctx.send(f"√{number} = {result:.4f}")
 
 async def setup(bot):
