@@ -10,8 +10,14 @@ class Animals(commands.Cog):
         self.bot = bot
         self.catdog_api_key = os.getenv("CATDOG_APIKEY")
 
-    @commands.command(aliases=["meow"], description="Get random cat pictures... because they are cute... meow")
-    async def cat(self, ctx, limit=1):
+    @commands.command(aliases=["meow"])
+    async def cat(self, ctx, limit: int = commands.parameter(default=1, description="- Number of cat images to show")):
+        """
+        🐈 Get random cat pictures... because they are cute... meow
+        
+        Example:
+        .cat 3 / .meow 5
+        """
 
         if limit > 5:
             await ctx.send("meow meow, meow meow meow (only 5 cat images at a time please) meow meow.. (thank you)")
@@ -53,8 +59,14 @@ class Animals(commands.Cog):
         except Exception as e:
             await ctx.send(f"beep - something went wrong...\n{e}")
 
-    @commands.command(aliases=["woof"], description="If you can do the same with cats, why not with dogs too? woof")
-    async def dog(self, ctx, limit=1):
+    @commands.command(aliases=["woof"])
+    async def dog(self, ctx, limit: int = commands.parameter(default=1, description="- Number of dog images to show")):
+        """
+        🐕 Get random dog pictures... because you didn't like cats (jk) woof
+        
+        Example:
+        .dog 1 / .woof 2
+        """
 
         if limit > 5:
             await ctx.send("woof woof woof (only 5 dog images at a time please) woof.. (thank you)")
