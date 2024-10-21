@@ -36,14 +36,12 @@ class melvyBot(commands.Bot):
         if guild.system_channel is not None:
             to_send = f"Hi {member.mention}! Welcome to {guild.name}!"
             await guild.system_channel.send(to_send)
-            print(f"{member} has joined >.>")
 
     async def on_member_remove(self, member: discord.Member):
         guild = member.guild
         if guild.system_channel is not None:
             to_send = f"Bye, {member.mention}!"
             await guild.system_channel.send(to_send)
-            print(f"{member} has left :C")
 
     async def on_message(self, message: discord.Message) -> None:
         if message.author == self.user:
